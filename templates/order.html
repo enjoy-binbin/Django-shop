@@ -1,0 +1,570 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <style>
+        /* 清除浮动 */
+        .clearfix:before, .clearfix:after {
+            content: "";
+            display: table
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        .clearfix {
+            zoom: 1
+        }
+
+        /* 浮动 */
+        .fl {
+            float: left
+        }
+
+        .fr {
+            float: right
+        }
+
+        .total_count {
+            width: 1200px;
+            margin: 0 auto;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+        }
+
+        .total_count em {
+            font-size: 16px;
+            color: #ff4200;
+            margin: 0 5px;
+        }
+
+        .cart_list_th {
+            width: 1198px;
+            border: 1px solid #ddd;
+            background-color: #f7f7f7;
+            margin: 0 auto;
+        }
+
+        .cart_list_th li {
+            height: 40px;
+            line-height: 40px;
+            float: left;
+            text-align: center;
+        }
+
+        .cart_list_th .col01 {
+            width: 26%;
+        }
+
+        .cart_list_th .col02 {
+            width: 16%;
+        }
+
+        .cart_list_th .col03 {
+            width: 13%;
+        }
+
+        .cart_list_th .col04 {
+            width: 12%;
+        }
+
+        .cart_list_th .col05 {
+            width: 15%;
+        }
+
+        .cart_list_th .col06 {
+            width: 18%;
+        }
+
+        .cart_list_td {
+            width: 1198px;
+            border: 1px solid #ddd;
+            background-color: #edfff9;
+            margin: 0 auto;
+            margin-top: -1px;
+        }
+
+        .cart_list_td li {
+            height: 120px;
+            line-height: 120px;
+            float: left;
+            text-align: center;
+        }
+
+        .cart_list_td .col01 {
+            width: 4%;
+        }
+
+        .cart_list_td .col02 {
+            width: 12%;
+        }
+
+        .cart_list_td .col03 {
+            width: 10%;
+        }
+
+        .cart_list_td .col04 {
+            width: 16%;
+        }
+
+        .cart_list_td .col05 {
+            width: 13%;
+        }
+
+        .cart_list_td .col06 {
+            width: 12%;
+        }
+
+        .cart_list_td .col07 {
+            width: 15%;
+        }
+
+        .cart_list_td .col08 {
+            width: 18%;
+        }
+
+        .cart_list_td .col02 img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto 0;
+        }
+
+        .cart_list_td .col03 {
+            height: 48px;
+            text-align: left;
+            line-height: 24px;
+            margin-top: 38px;
+        }
+
+        .cart_list_td .col03 em {
+            color: #999
+        }
+
+        .cart_list_td .col08 a {
+            color: #666
+        }
+
+        .cart_list_td .col06 .num_add {
+            width: 98px;
+            height: 28px;
+            border: 1px solid #ddd;
+            margin: 40px auto 0;
+        }
+
+        .cart_list_td .col06 .num_add a {
+            width: 29px;
+            height: 28px;
+            line-height: 28px;
+            background-color: #f3f3f3;
+            font-size: 14px;
+            color: #666
+        }
+
+        .cart_list_td .col06 .num_add input {
+            width: 38px;
+            height: 28px;
+            text-align: center;
+            line-height: 30px;
+            border: 0px;
+            display: block;
+            float: left;
+            outline: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        .settlements {
+            width: 1198px;
+            height: 78px;
+            border: 1px solid #ddd;
+            background-color: #fff4e8;
+            margin: -1px auto 0;
+        }
+
+        .settlements li {
+            line-height: 78px;
+            float: left;
+        }
+
+        .settlements .col01 {
+            width: 4%;
+            text-align: center
+        }
+
+        .settlements .col02 {
+            width: 12%;
+        }
+
+        .settlements .col03 {
+            width: 69%;
+            height: 48px;
+            line-height: 28px;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .settlements .col03 span {
+            color: #ff0000;
+            padding-right: 5px
+        }
+
+        .settlements .col03 em {
+            color: #ff3d3d;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .settlements .col03 span {
+            color: #ff0000;
+        }
+
+        .settlements .col03 b {
+            color: #ff0000;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        .settlements .col04 {
+            width: 14%;
+            text-align: center;
+            float: right;
+        }
+
+        .settlements .col04 a {
+            display: block;
+            height: 78px;
+            background-color: #ff3d3d;
+            text-align: center;
+            line-height: 78px;
+            color: #fff;
+            font-size: 24px
+        }
+
+        .common_title {
+            width: 1200px;
+            margin: 20px auto 0;
+            font-size: 14px;
+        }
+
+        .edit_site {
+            position: absolute;
+            right: 20px;
+            top: 30px;
+            width: 100px;
+            height: 30px;
+            background-color: #37ab40;
+            text-align: center;
+            line-height: 30px;
+            color: #fff
+        }
+
+        .common_list_con {
+            width: 1200px;
+            border: 1px solid #dddddd;
+            border-top: 2px solid #00bc6f;
+            margin: 10px auto 0;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+
+        .common_list_con dl {
+            margin: 20px;
+        }
+
+        .common_list_con dt {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px
+        }
+
+        .common_list_con dd input {
+            vertical-align: bottom;
+            margin-right: 10px
+        }
+
+        .goods_list_th {
+            height: 40px;
+            border-bottom: 1px solid #ccc
+        }
+
+        .goods_list_th li {
+            float: left;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        .goods_list_th .col01 {
+            width: 30%
+        }
+
+        .goods_list_th .col02 {
+            width: 20%
+        }
+
+        .goods_list_th .col03 {
+            width: 25%
+        }
+
+        .goods_list_th .col04 {
+            width: 15%
+        }
+
+        .goods_list_th .col05 {
+            width: 15%
+        }
+
+        .goods_list_td {
+            height: 80px;
+            border-bottom: 1px solid #eeeded
+        }
+
+        .goods_list_td li {
+            float: left;
+            line-height: 80px;
+            text-align: center;
+        }
+
+        .goods_list_td .col01 {
+            width: 4%
+        }
+
+        .goods_list_td .col02 {
+            width: 6%
+        }
+
+        .goods_list_td .col03 {
+            width: 20%
+        }
+
+        .goods_list_td .col04 {
+            width: 20%
+        }
+
+        .goods_list_td .col05 {
+            width: 25%
+        }
+
+        .goods_list_td .col06 {
+            width: 15%
+        }
+
+        .goods_list_td .col07 {
+            width: 15%
+        }
+
+        .goods_list_td .col02 {
+            text-align: right
+        }
+
+        .goods_list_td .col02 img {
+            width: 63px;
+            height: 63px;
+            border: 1px solid #ddd;
+            display: block;
+            margin: 7px 0;
+            float: right;
+        }
+
+        .goods_list_td .col03 {
+            text-align: left;
+            text-indent: 20px
+        }
+
+        .settle_con {
+            margin: 10px
+        }
+
+        .total_goods_count, .transit, .total_pay {
+            line-height: 24px;
+            text-align: right
+        }
+
+        .total_goods_count em, .total_goods_count b, .transit b, .total_pay b {
+            font-size: 14px;
+            color: #ff4200;
+            padding: 0 5px;
+        }
+
+        .order_submit {
+            width: 1200px;
+            margin: 20px auto;
+        }
+
+        .order_submit a {
+            width: 160px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: #47aa34;
+            color: #fff;
+            font-size: 16px;
+            display: block;
+            float: right
+        }
+
+        .pay_style_con {
+            margin: 20px;
+        }
+
+        .pay_style_con input {
+            float: left;
+            margin: 14px 7px 0 0;
+        }
+
+        .pay_style_con label {
+            float: left;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px 10px 10px 40px;
+            margin-right: 25px
+        }
+
+        .pay_style_con .cash {
+            background: url({% static '/images/pay_icons.png' %}) 8px top no-repeat #fff;
+        }
+
+        .pay_style_con .weixin {
+            background: url({% static '/images/pay_icons.png' %}) 6px -36px no-repeat #fff;
+        }
+
+        .pay_style_con .zhifubao {
+            background: url({% static '/images/pay_icons.png' %}) 12px -72px no-repeat #fff;
+            width: 50px;
+            height: 16px
+        }
+
+        .pay_style_con .bank {
+            background: url({% static '/images/pay_icons.png' %}) 6px -108px no-repeat #fff;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'trade:order_commit' %}" method="post" id="myform">
+        <h3 class="common_title">确认收货地址</h3>
+        <div class="common_list_con clearfix">
+            <dl>
+                <dt>寄送到：</dt>
+                <dd><input type="radio" name="address" value="{{ default_address.id }}"
+                           checked>{{ default_address.address }}
+                    （{{ default_address.signer }}
+                    收） {{ default_address.signer_mobile }}</dd>
+            </dl>
+            {% for address in address %}
+                <dl>
+                    <dd><input type="radio" name="address" value="{{ address.id }}">{{ address.address }}
+                        （{{ address.signer }}
+                        收） {{ address.signer_mobile }}</dd>
+                </dl>
+            {% endfor %}
+            <a href="{% url 'users:site_list' %}" class="edit_site">编辑收货地址</a>
+        </div>
+
+        <h3 class="common_title">支付方式</h3>
+        <div class="common_list_con clearfix">
+            <div class="pay_style_con clearfix">
+                <input type="radio" name="payment" checked value="1">
+                <label class="zhifubao"></label>
+                <input type="radio" name="payment" value="2">
+                <label class="weixin">微信支付</label>
+                <input type="radio" name="payment" value="3">
+                <label class="cash">货到付款</label>
+                <input type="radio" name="payment" value="4">
+                <label class="bank">银行卡支付</label>
+            </div>
+        </div>
+
+        <h3 class="common_title">商品列表</h3>
+        <div class="common_list_con clearfix">
+            <ul class="goods_list_th clearfix">
+                <li class="col01">商品名称</li>
+                <li class="col03">商品价格</li>
+                <li class="col04">数量</li>
+                <li class="col05">小计</li>
+            </ul>
+            {% for good in goods %}
+                <ul class="goods_list_td clearfix">
+                    <li class="col01">{{ forloop.counter }}</li>
+                    <li class="col02"><img src="{{ MEDIA_URL }}{{ good.goods.goods_front_image }}"></li>
+                    <li class="col03" style="overflow: hidden;height: 80px ">{{ good.goods.name }}</li>
+                    <li class="col05">{{ good.goods.shop_price }}</li>
+                    <li class="col06">{{ good.nums }}</li>
+                    <li class="col07">约{% widthratio good.goods.shop_price 1 good.nums %}元</li>
+                </ul>
+                <input type="hidden" name="good_id" value="{{ good.goods.id }}">
+            {% endfor %}
+        </div>
+
+        <h3 class="common_title">总金额结算</h3>
+        <div class="common_list_con clearfix">
+            <div class="settle_con">
+                <div style="position: absolute; margin: 8px;">订单留言：<input type="text" name="post_message"></div>
+                <div class="total_goods_count">共<em>{{ total_nums }}</em>件商品，总金额<b>{{ total_price }}元</b></div>
+                <div class="transit">运费：<b>0元</b></div>
+                <div class="total_pay">实付款：<b>{{ total_price }}元</b></div>
+            </div>
+        </div>
+        {% csrf_token %}
+        <div class="order_submit clearfix">
+            <a href="javascript:;" id="order_btn">提交订单</a>
+        </div>
+    </form>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+
+        // 提交订单  post -> /order/commit/
+        function order_commit(params) {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/order/commit/",
+                data: {'params': params},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status === 'fail') {
+                        if (data.msg === '用户未登录') {
+                            window.location.href = "{% url 'login' %}";
+                        } else {
+                            alert(data.msg)
+                        }
+
+                    } else if (data.status === 'success') {
+                        alert(data.msg);
+                        window.location.href = "{% url 'users:user_order' %}";
+                    }
+                },
+            });
+        }
+
+        $('#order_btn').click(function () {
+            let address_id = $('input[name="address"]:checked').val();
+            let pay_method = $('input[name="payment"]:checked').val();
+            let post_message = $('input[name="post_message"]').val();
+            let nums = $('.col06')[0].innerText;
+            console.log(nums);
+            let params = {
+                'address_id': address_id,
+                'pay_method': pay_method,
+                'goods_id': [],
+                'post_message': post_message,
+                'nums': nums,
+            };
+            let goods_id = $('input[name="good_id"]').each(function () {
+                params['goods_id'].push($(this).val());
+            });
+            order_commit(params);
+        })
+
+    </script>
+{% endblock %}

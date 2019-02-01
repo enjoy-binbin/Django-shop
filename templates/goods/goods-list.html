@@ -1,0 +1,164 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+
+{% block content %}
+    <section>
+        <div class="wp">
+            <ul class="crumbs">
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li>商品列表</li>
+            </ul>
+        </div>
+    </section>
+
+
+    <section>
+        <div class="wp">
+            <div class="list" style="margin-top:0;">
+                <div class="left layout">
+                    <div class="listoptions">
+                        <ul>
+                            <li>
+                                <h2>商品分类</h2>
+                                <div class="cont">
+                                    {% ifequal this_category.category_type 1 %}
+                                        <a href="{% url 'category' this_category.id %}"><span
+                                                class="active2"
+                                        >全部</span></a>
+                                    {% endifequal %}
+
+                                    {% ifequal this_category.category_type 2 %}
+                                        <a href="{% url 'category' this_category.parent_category.id %}"><span>全部</span></a>
+                                    {% endifequal %}
+
+                                    {% ifequal this_category.category_type 3 %}
+                                        <a href="{% url 'category' this_category.parent_category.parent_category.id %}"><span>全部</span></a>
+                                    {% endifequal %}
+
+                                    {% for sub in sub_category %}
+                                        <a href="{% url 'category' sub.id %}">
+                                            <span
+                                                {% if this_category.id == sub.id %}
+                                                    class="active2"
+                                                {% elif this_category.parent_category.id == sub.id %}
+                                                    class="active2"
+                                                {% endif %}
+                                            >{{ sub.name }}
+                                            </span>
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+
+                            <li>
+                                <h2>三级分类</h2>
+                                <div class="more">更多</div>
+                                <div class="cont"  style="width: 660px !important;">
+
+                                    {% ifequal this_category.category_type 1 %}
+                                        <a href="{% url 'category' this_category.id %}"><span class="active2">全部</span></a>
+                                    {% endifequal %}
+
+                                    {% ifequal this_category.category_type 2 %}
+                                        <a href="{% url 'category' this_category.id %}"><span class="active2">全部</span></a>
+                                    {% endifequal %}
+
+                                    {% ifequal this_category.category_type 3 %}
+                                        <a href="{% url 'category' this_category.parent_category.id %}"><span>全部</span></a>
+                                    {% endifequal %}
+
+                                    {% for sub in sub_sub_category %}
+                                        <a href="{% url 'category' sub.id %}"><span{% ifequal this_category.id sub.id %}
+                                            class="active2"{% endifequal %}>{{ sub.name }}</span></a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="head">
+                        <ul class="tab_header">
+                            <li{% ifequal sort 'add_time' %} class="active"{% endifequal %}><a href="?sort=add_time">最新</a></li>
+                            <li{% ifequal sort 'sold_num' %} class="active"{% endifequal %}><a href="?sort=sold_num">最热</a></li>
+                            <li{% ifequal sort 'click_num' %} class="active"{% endifequal %}><a href="?sort=click_num">最多点击</a></li>
+                        </ul>
+                    </div>
+                    <div id="inWindow">
+                        <div class="tab_cont " id="content">
+                            <div class="group_list">
+                                {% for good in goods.object_list %}
+                                    <div class="box">
+                                        <a href="{% url 'good_detail' good.id %}">
+                                            <img width="280" height="350" class="scrollLoading"
+                                                 src="{{ MEDIA_URL }}{{ good.goods_front_image }}"/>
+                                        </a>
+                                        <div class="des">
+                                            <a href="{% url 'good_detail' good.id %}">
+                                                <h3 class="line-limit-length">{{ good.name }}</h3>
+                                            </a>
+                                            <span class="fl">价格：<i class="key">{{ good.shop_price }}</i></span>
+                                            <span class="fr">已售出：{{ good.sold_num }}　</span>
+                                        </div>
+                                        <div class="bottom">
+                                            <a href="{% url 'good_detail' good.id %}"><span class="fl">来自彬彬超市</span></a>
+                                            <span class="star fr"
+                                                  data-favid="{{ good.fav_num }}">{{ good.fav_num }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+                            <div class="pageturn">
+                                <ul class="pagelist">
+                                    {% if goods.has_previous %}
+                                        <li class="long"><a href="?{{ goods.previous_page_number.querystring }}">上一页</a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for page in goods.pages %}
+                                        {% if page %}
+                                            {% ifequal page goods.number %}
+                                                <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                                            {% else %}
+                                                <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                                            {% endifequal %}
+                                        {% else %}
+                                            <li class="none"><a href="">...</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if goods.has_next %}
+                                        <li class="long"><a href="?{{ goods.next_page_number.querystring }}">下一页</a>
+                                        </li>
+                                    {% endif %}
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="right layout">
+                    <div class="head">热门商品推荐</div>
+                    <div class="group_recommend">
+                        {% for good in hot_goods %}
+                            <dl>
+                                <dt>
+                                    <a target="_blank" href="">
+                                        <img width="240" height="220" class="scrollLoading"
+                                             src="{{ MEDIA_URL }}{{ good.goods_front_image }}"/>
+                                    </a>
+                                </dt>
+                                <dd>
+                                    <a target="_blank" href=""><h2>{{ good.name }}</h2></a>
+                                    <span class="fl">点击数：<i class="key">{{ good.click_num }}</i></span>
+                                </dd>
+                            </dl>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

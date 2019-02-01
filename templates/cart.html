@@ -1,0 +1,551 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <style>
+        /* 清除浮动 */
+        .clearfix:before, .clearfix:after {
+            content: "";
+            display: table
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        .clearfix {
+            zoom: 1
+        }
+
+        /* 浮动 */
+        .fl {
+            float: left
+        }
+
+        .fr {
+            float: right
+        }
+
+        .total_count {
+            width: 1200px;
+            margin: 0 auto;
+            height: 40px;
+            line-height: 40px;
+            font-size: 14px;
+        }
+
+        .total_count em {
+            font-size: 16px;
+            color: #ff4200;
+            margin: 0 5px;
+        }
+
+        .cart_list_th {
+            width: 1198px;
+            border: 1px solid #ddd;
+            background-color: #f7f7f7;
+            margin: 0 auto;
+        }
+
+        .cart_list_th li {
+            height: 40px;
+            line-height: 40px;
+            float: left;
+            text-align: center;
+        }
+
+        .cart_list_th .col01 {
+            width: 26%;
+        }
+
+        .cart_list_th .col02 {
+            width: 13%;
+        }
+
+        .cart_list_th .col03 {
+            width: 12%;
+        }
+
+        .cart_list_th .col04 {
+            width: 12%;
+        }
+
+        .cart_list_th .col05 {
+            width: 15%;
+        }
+
+        .cart_list_th .col06 {
+            width: 18%;
+        }
+
+        .cart_list_td {
+            width: 1198px;
+            border: 1px solid #ddd;
+            background-color: #edfff9;
+            margin: 0 auto;
+            margin-top: -1px;
+        }
+
+        .cart_list_td li {
+            height: 120px;
+            line-height: 120px;
+            float: left;
+            text-align: center;
+        }
+
+        .cart_list_td .col01 {
+            width: 4%;
+        }
+
+        .cart_list_td .col02 {
+            width: 12%;
+        }
+
+        .cart_list_td .col03 {
+            width: 10%;
+        }
+
+        .cart_list_td .col04 {
+            width: 16%;
+        }
+
+        .cart_list_td .col05 {
+            width: 13%;
+        }
+
+        .cart_list_td .col06 {
+            width: 12%;
+        }
+
+        .cart_list_td .col07 {
+            width: 15%;
+        }
+
+        .cart_list_td .col08 {
+            width: 18%;
+        }
+
+        .cart_list_td .col02 img {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ddd;
+            display: block;
+            margin: 10px auto 0;
+        }
+
+        .cart_list_td .col03 {
+            height: 48px;
+            text-align: left;
+            line-height: 24px;
+            margin-top: 38px;
+        }
+
+        .cart_list_td .col03 em {
+            color: #999
+        }
+
+        .cart_list_td .col08 a {
+            color: #666
+        }
+
+        .cart_list_td .col06 .num_add {
+            width: 98px;
+            height: 28px;
+            border: 1px solid #ddd;
+            margin: 40px auto 0;
+        }
+
+        .cart_list_td .col06 .num_add a {
+            width: 29px;
+            height: 28px;
+            line-height: 28px;
+            background-color: #f3f3f3;
+            font-size: 14px;
+            color: #666
+        }
+
+        .cart_list_td .col06 .num_add input {
+            width: 38px;
+            height: 28px;
+            text-align: center;
+            line-height: 30px;
+            border: 0px;
+            display: block;
+            float: left;
+            outline: none;
+            border-left: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+
+        .settlements {
+            width: 1198px;
+            height: 78px;
+            border: 1px solid #ddd;
+            background-color: #fff4e8;
+            margin: -1px auto 0;
+        }
+
+        .settlements li {
+            line-height: 78px;
+            float: left;
+        }
+
+        .settlements .col01 {
+            width: 4%;
+            text-align: center
+        }
+
+        .settlements .col02 {
+            width: 12%;
+        }
+
+        .settlements .col03 {
+            width: 69%;
+            height: 48px;
+            line-height: 28px;
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .settlements .col03 span {
+            color: #ff0000;
+            padding-right: 5px
+        }
+
+        .settlements .col03 em {
+            color: #ff3d3d;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .settlements .col03 span {
+            color: #ff0000;
+        }
+
+        .settlements .col03 b {
+            color: #ff0000;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+
+        .settlements .col04 {
+            width: 14%;
+            text-align: center;
+            float: right;
+        }
+
+        .settlements .col04 a {
+            display: block;
+            height: 78px;
+            background-color: #ff3d3d;
+            text-align: center;
+            line-height: 78px;
+            color: #fff;
+            font-size: 24px
+        }
+
+        .common_title {
+            width: 1200px;
+            margin: 20px auto 0;
+            font-size: 14px;
+        }
+
+        .common_title2 {
+            height: 20px;
+            line-height: 20px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .edit_site {
+            position: absolute;
+            right: 20px;
+            top: 30px;
+            width: 100px;
+            height: 30px;
+            background-color: #37ab40;
+            text-align: center;
+            line-height: 30px;
+            color: #fff
+        }
+
+        .common_list_con {
+            width: 1200px;
+            border: 1px solid #dddddd;
+            border-top: 2px solid #00bc6f;
+            margin: 10px auto 0;
+            background-color: #f7f7f7;
+            position: relative;
+        }
+
+        .common_list_con dl {
+            margin: 20px;
+        }
+
+        .common_list_con dt {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 10px
+        }
+
+        .common_list_con dd input {
+            vertical-align: bottom;
+            margin-right: 10px
+        }
+
+        .pay_style_con {
+            margin: 20px;
+        }
+
+        .pay_style_con input {
+            float: left;
+            margin: 14px 7px 0 0;
+        }
+
+        .pay_style_con label {
+            float: left;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 10px 10px 10px 40px;
+            margin-right: 25px
+        }
+
+        a {
+            text-decoration: none;
+            out-line: none;
+            color: black;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <form action="{% url 'trade:order' %}" method="post">
+        <div class="total_count">商品种类<em>{{ cart|length }}</em>类</div>
+        <ul class="cart_list_th clearfix">
+            <li class="col01">商品名称</li>
+            <li class="col02">商品价格</li>
+            <li class="col03">数量</li>
+            <li class="col03">小计</li>
+            <li class="col03">库存</li>
+            <li class="col03">操作</li>
+        </ul>
+        {% for cart in cart %}
+            <ul class="cart_list_td clearfix">
+                <li class="col01"><input type="checkbox" name="good_ids" value="{{ cart.goods.id }}" checked></li>
+                <li class="col02"><a href="{% url 'good_detail' cart.goods.id %}"><img
+                        src="{{ MEDIA_URL }}{{ cart.goods.goods_front_image }}"></a></li>
+                <li class="col03" style="overflow: hidden"><a
+                        href="{% url 'good_detail' cart.goods.id %}">{{ cart.goods.name }}</a><br><em>{{ cart.goods.shop_price }}</em>
+                </li>
+                <li class="col05">{{ cart.goods.shop_price }}元</li>
+                <li class="col06">
+                    <div class="num_add">
+                        <a href="javascript:;" class="add fl add_icon" data-id="{{ cart.goods.id }}">+</a>
+                        <input type="text" class="num_show fl buynum" value="{{ cart.nums }}"
+                               data-id="{{ cart.goods.id }}">
+                        <a href="javascript:;" class="minus fl minu_icon" data-id="{{ cart.goods.id }}">-</a>
+                    </div>
+                </li>
+                <li class="col06 price">{% widthratio cart.goods.shop_price 1 cart.nums %}</li>
+                <li class="col06">{{ cart.goods.goods_num }}</li>
+                <li class="col06"><a href="javascript:;" class="delete_cart" data-id="{{ cart.goods.id }}">删除</a></li>
+            </ul>
+        {% endfor %}
+
+        <ul class="settlements" style="margin-bottom: 30px">
+            <li class="col01"><input id='all_check' type="checkbox" name="" checked=""></li>
+            <li class="col02">全选</li>
+            <li class="col03">合计(不含运费)：<span>¥</span><em id="total_price">{{ total_price }}</em><br>共计<b
+                    id="total_nums">{{ total_nums }}</b>件商品
+            </li>
+            <li class="col04"><input type="submit" value="去结算" style="cursor:pointer; width: 168px; height: 78px; background-color: #37ab40; font-size: 24px; color: #fff"></li>
+        </ul>
+    {% csrf_token %}
+    </form>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript">
+
+        let res;
+
+        // 修改商品数量 加入购物车 cart/add/
+        function add_cart(current_elem, good_id, current_num) {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url 'trade:add_cart' %}",
+                data: {'good_id': good_id, 'nums': current_num, 'type': 'update'},
+                async: false,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status === 'fail') {
+                        if (data.msg === '用户未登录') {
+                            window.location.href = "{% url 'login' %}";
+                            res = false;
+                        } else {
+                            alert(data.msg);
+                            res = false;
+                        }
+
+                    } else if (data.status === 'success') {
+                        res = true;
+                        {#alert(data.msg);#}
+                    }
+                },
+            });
+        }
+
+        // 全选和反选
+        let all_check = $('#all_check');
+        let flag = true;
+        all_check.click(function () {
+            let checkboxs = $("input[type='checkbox']");
+            if (flag) {
+                flag = false;
+                checkboxs.each(function () {
+                    $(this).prop('checked', false);
+                })
+            } else {
+                flag = true;
+                checkboxs.each(function () {
+                    $(this).prop('checked', true);
+                })
+            }
+        });
+
+        let total_price = $('#total_price');
+        let total_nums = $('#total_nums');
+
+        // 数量加减
+        let buynum = $(".buynum");
+        $('.minu_icon').on('click', function () {
+            res = false;
+            let buynum = $(this).prev()[0];
+            if (buynum.value <= 0) {
+                return;
+            }
+            buynum.value--;
+            add_cart($(this), $(this).attr("data-id"), buynum.value);
+
+            // 计算价格
+            let price = parseFloat($(this).parent().parent().prev().html());
+            let nums = $(this).prev()[0].value;
+
+            $(this).parent().parent().next()[0].innerHTML = price * nums;  // 小计 = 单价 * 数量
+
+            // 计算全部商品的总价
+            let all_total = 0;
+            $('.price').each(function () {
+                all_total += parseFloat($(this).html())
+            });
+            $('#total_price')[0].innerHTML = all_total;
+
+            // 计算全部商品的数量
+            let total_nums = 0;
+            $('.buynum').each(function () {
+                total_nums += parseInt($(this)[0].value);
+            });
+            $('#total_nums')[0].innerHTML = total_nums;
+        });
+
+        $('.add_icon').on('click', function () {
+            res = false;
+            let buynum = $(this).next()[0];
+            buynum.value++;
+            add_cart($(this), $(this).attr("data-id"), buynum.value);
+            if (res === false) {
+                buynum.value--;
+            }
+
+            // 计算价格
+            let price = parseFloat($(this).parent().parent().prev().html());
+            let nums = $(this).next()[0].value;
+
+            $(this).parent().parent().next()[0].innerHTML = price * nums;  // 小计 = 单价 * 数量
+
+            // 计算全部商品的总价
+            let total_price = 0;
+            $('.price').each(function () {
+                total_price += parseFloat($(this).html());
+            });
+            $('#total_price')[0].innerHTML = total_price;
+
+            // 计算全部商品的数量
+            let total_nums = 0;
+            $('.buynum').each(function () {
+                total_nums += parseInt($(this)[0].value);
+            });
+            $('#total_nums')[0].innerHTML = total_nums;
+        });
+
+
+        // input输入框
+        buynum.on('blur', function (event) {
+            res = false;
+            add_cart($(this), $(this).attr("data-id"), $(this)[0].value);
+
+            if (res === false) {
+                $(this)[0].value = event['srcElement']['defaultValue'];
+                return
+            }
+            // 计算价格
+            let price = parseFloat($(this).parent().parent().prev().html());
+            let nums = $(this)[0].value;
+            let sub_total = price * nums;  // 小计 = 单价 * 数量
+
+            $(this).parent().parent().next()[0].innerHTML = sub_total;
+
+            // 计算全部商品的总价
+            let all_total = 0;
+            $('.price').each(function () {
+                all_total += parseFloat($(this).html())
+            });
+            $('#total_price')[0].innerHTML = all_total;
+
+            // 计算全部商品的数量
+            let total_nums = 0;
+            $('.buynum').each(function () {
+                total_nums += parseInt($(this)[0].value);
+            });
+            $('#total_nums')[0].innerHTML = total_nums;
+        });
+
+        // 删除购物车 /cart/
+        function delete_cart(good_id) {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "/cart/",
+                data: {'good_id': good_id},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        if (data.msg == '用户未登录') {
+                            window.location.href = "{% url 'login' %}";
+                        } else {
+                            alert(data.msg);
+                        }
+
+                    } else if (data.status == 'success') {
+                        alert(data.msg);
+                        location.reload();
+                    }
+                },
+            });
+        }
+
+        $('.delete_cart').on('click', function () {
+            if (confirm('确定要删除吗？')) {
+                delete_cart($(this).attr("data-id"));
+            } else {
+
+            }
+        })
+    </script>
+{% endblock %}

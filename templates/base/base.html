@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title>首页 - 彬彬商场</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
+    {% block css %}
+    {% endblock css %}
+    <style>
+        #menu {
+            position: relative;
+        }
+
+        .first_ul {
+            position: absolute;
+            left: 0;
+            display: block;
+            padding-left: 0;
+            z-index: 666;
+            width: 120px;
+        }
+
+        .first_li {
+            background-color: #717171;
+            display: none;
+        }
+
+        .first_li > a:hover {
+            background: #3D9328;
+
+        }
+
+        .second_ul {
+        {#display: block;#} position: absolute;
+            width: 950px;
+            height: 490px;
+            left: 120px;
+            top: 0;
+            display: none;
+        }
+
+        .header .nav .second_li {
+            box-sizing: border-box;
+            display: block;
+            position: relative;
+            top: 0;
+            width: 950px;
+            height: 500px;
+            background-color: #717171;
+            border: 1px solid #ddd;
+        }
+
+        dl.item {
+            box-sizing: border-box;
+            width: 200px;
+            height: 150px;
+            background-color: #717171;
+            float: left;
+            padding-left: 5px;
+            margin: 0 30px 20px !important;
+
+        }
+
+        dl.item dt {
+            width: 80px;
+            color: #222;
+            font: bold 14px/20px "Microsoft Yahei", tahoma, arial, "Hiragino Sans GB";
+        }
+
+        dl.item dt > a:hover {
+            color: #3D9328;
+        }
+
+        dl.item dt a:after {
+            content: '';
+            position: absolute;
+            width: 180px;
+            height: 2px;
+            background: #ddd;
+            left: 10px;
+            top: 35px;
+        }
+
+        .split-line2 {
+            position: absolute;
+            display: block;
+            width: 1px;
+            height: 460px;
+            background: #ddd;
+            left: 265px;
+            top: 15px;
+        }
+
+        .split-line3 {
+            position: absolute;
+            display: block;
+            width: 1px;
+            height: 460px;
+            background: #ddd;
+            left: 530px;
+            top: 15px;
+        }
+
+        dl.item dd {
+            float: left;
+            width: 200px;
+            overflow: hidden;
+            padding-top: 10px;
+        }
+
+        dl.item dd > a:hover {
+            color: #3D9328;
+        }
+
+        .second_li dl.item dd a::before {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 16px;
+            left: 0;
+            top: 0;
+            margin-left: -8px;
+            background-color: #dedede;
+        }
+
+        .second_li dl.item dd a {
+            width: auto;
+            position: relative;
+            float: left;
+            height: 16px;
+            font: 12px/16px "Microsoft Yahei", tahoma, arial, "Hiragino Sans GB";
+            margin-left: 16px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+        }
+
+        .clearfix::after, .clearfix::before {
+            content: "";
+            height: 0;
+            line-height: 0;
+            display: block;
+            visibility: hidden;
+            clear: both;
+        }
+        .line-limit-length {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<section class="headerwrap">
+    <header>
+        <div class=" header">
+            <div class="top">
+                <div class="wp">
+                    <div class="fl"><p>服务电话：<b>138000138000</b></p></div>
+
+                    <!--登录后跳转-->
+                    {% if request.user.is_authenticated %}
+                        <div class="personal">
+                            <dl class="user fr">
+                                <dd>{{ request.user.nickname }}<img class="down fr"
+                                                                    src="{% static 'images/top_down.png' %}"/></dd>
+                                <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+                            </dl>
+                            <div class="userdetail">
+                                <dl>
+                                    <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+                                    <dd>
+                                        <h2>{{ request.user.nickname }}</h2>
+                                        <p>{{ request.user.username }}</p>
+                                    </dd>
+                                </dl>
+                                <div class="btn">
+                                    <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
+                                    <a class="fr" href="/logout/">退出</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
+                        <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <div class="middle">
+                <div class="wp">
+                    <a href="{% url 'index' %}"><img style="width: 194px" class="fl"
+                                                     src="{% static 'binshop_logo.png' %}"/></a>
+                    <div class="searchbox fr">
+                        <div class="selectContainer fl">
+                            <span class="selectOption" id="jsSelectOption" data-value="good">
+                                商品
+                            </span>
+                            <ul class="selectMenu" id="jsSelectMenu">
+                                <li data-value="good">商品</li>
+                            </ul>
+                        </div>
+                        <input id="search_keywords" class="fl" type="text" value="{{ keyword }}" placeholder="请输入搜索内容"/>
+                        <img class="search_btn fr" id="jsSearchBtn" src="{% static 'images/search_btn.png' %}"/>
+                    </div>
+                </div>
+            </div>
+
+
+            <nav>
+                <div class="nav">
+                    <div id='menu' class="wp">
+                        <ul>
+                            <li{% if is_acitve == 'index' or is_First_cat %} class="active"{% endif %}>
+                                <a href="{% url 'index' %}" class="first_list" id="all_category">全部分类 ↓</a>
+                                <ul class="first_ul">
+
+                                    <!-- 一个li就是一个一级分类， li下的ul为右边的大板块，dt的a标签为二级分类, dd的a是三级分类 -->
+                                    {% for category in all_categories %}
+                                        <li class="first_li">
+                                            <a href="{% url 'category' category.id %}">{{ category.name }}</a>
+                                            <ul class="second_ul">
+                                                <li class="second_li">
+                                                    {% for sub_cat in category.sub_cat %}
+                                                        <dl class="item">
+                                                            <dt>
+                                                                <a href="{% url 'category' sub_cat.id %}">{{ sub_cat.name }}</a>
+                                                            </dt>
+                                                            <dd>
+                                                                {% for sub_sub_cat in sub_cat.sub_cat %}
+                                                                    <a href="{% url 'category' sub_sub_cat.id %}">{{ sub_sub_cat.name }}</a>
+                                                                {% endfor %}
+                                                            </dd>
+                                                        </dl>
+                                                    {% endfor %}
+                                                    <em class="split-line2"></em>
+                                                    <em class="split-line3"></em>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+
+                            <li{% ifequal is_acitve 'hot' %} class="active"{% endifequal %}>
+                                <a href="{% url 'goods:list' %}" class="first_list">
+                                    精选商品<img class="hot" src="{% static 'images/nav_hot.png' %}">
+                                </a>
+                            </li>
+                            {% for category in five_categories %}
+                                <li{% ifequal this_category.id category.id %} class="active"{% endifequal %}><a
+                                        href="{% url 'category' category.id %}"
+                                        class="first_list">{{ category.name }}</a></li>
+                            {% endfor %}
+                            <li{% ifequal is_active 'cart' %} class="active"{% endifequal %}><a
+                                    href="{% url 'cart' %}"
+                                    class="first_list">我的购物车</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+        </div>
+    </header>
+</section>
+<!--crumbs start-->
+
+
+{% block content %}
+{% endblock %}
+
+
+<footer>
+    <div class="footer">
+        <div class="wp">
+            <ul class="cont">
+                <li class="logo"><a href=""><img style="width: 200px;" src="{% static 'binshop_logo.png' %}"/></a></li>
+                <li class="code"><img src="{% static 'code.png' %}"/>
+                    <p class="center">扫描添加微信</p></li>
+                <li class="third"><img class="fl" src="{% static 'images/tell.png' %}"/>
+                    <p class="tell">13800138000</p>
+                    <p class="time">周一至周日 07:00-22:00</p></li>
+            </ul>
+
+        </div>
+        <p class="line"></p>
+        <div class="wp clear">
+            <span class="fl">2019 www.binshop.com 彬彬商场-打造华商平价超市 保留所有权利</span>
+            <span class="fr">copyright & 2019 ICP备案证书号：蜀ICP备xxxxx号-1</span>
+        </div>
+    </div>
+</footer>
+
+<section>
+    <ul class="sidebar">
+        <li class="qq">
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2023525077&site=qq&menu=yes"></a>
+        </li>
+        <li class="totop"></li>
+    </ul>
+</section>
+
+<script src="{% static 'js/selectUi.js' %}" type='text/javascript'></script>
+<script src="{% static 'js/plugins/laydate/laydate.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/layer/layer.js' %}"></script>
+<script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/jquery.scrollLoading.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/deco-common.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/index.js' %}" type="text/javascript"></script>
+<script type="text/javascript">
+    // 简单版本的三级分类显示。单纯利用js控制 display的属性
+    let all_category = $('#all_category')[0];
+    let first_li = $('.first_li');
+    let second_ul = $('.second_ul');
+
+    all_category.onmouseover = function () {
+        for (let i = 0; i < first_li.length; i++) {
+            first_li[i].style.display = 'block';  // 显示全部一级分类
+            if (i !== 0) {
+                second_ul[i].style.display = 'none';
+            }
+
+            // over过一个一级分类后，显示相对应的二级分类
+            first_li[i].onmouseover = function () {
+                this.style.background = '#3D9328';  // 高亮一级分类背景色
+                second_ul[i].style.display = 'block';  // 滑进来了就显示右边
+
+                for (let j = 0; j < first_li.length; j++) {
+                    first_li[j].style.display = 'block';
+                    if (i !== j) {
+                        second_ul[j].style.display = 'none';
+                    }
+                }
+            };
+
+            // 左右out出一级分类后，将整本分类栏隐藏
+            first_li[i].onmouseout = function () {
+                this.style.background = '#717171';  // 恢复一级分类背景色
+                for (let j = 0; j < first_li.length; j++) {
+                    first_li[j].style.display = 'none';
+                }
+            }
+
+        }
+    };
+
+    all_category.onmouseout = function () {
+        for (let i = 0; i < first_li.length; i++) {
+            first_li[i].style.display = 'none';
+        }
+    }
+
+    $('#jsSearchBtn').on('click', function () {
+        search_click();
+    });
+
+    //顶部搜索栏搜索方法
+    function search_click() {
+        let type = $('#jsSelectOption').attr('data-value'),
+            keyword = $('#search_keywords').val(),
+            request_url = '';
+        if (keyword === "") {
+            return
+        }
+        if (type === "good") {
+            request_url = "/goods/?keyword=" + keyword
+        }
+        window.location.href = request_url;
+    }
+
+
+</script>
+{% block js %}
+{% endblock %}
+</body>
+</html>

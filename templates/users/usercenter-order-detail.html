@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <title>个人信息- 订单详情</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'js/plugins/queryCity/css/cityLayout.css' %}">
+
+    {% block css %}
+        <style>
+            .right_content {
+                width: 945px;
+                min-height: 500px;
+            }
+
+            .common_title2 {
+                height: 20px;
+                line-height: 20px;
+                font-size: 16px;
+                margin: 10px 0;
+            }
+
+            .order_list_th {
+                width: 1198px;
+                border: 1px solid #ddd;
+                background-color: #f7f7f7;
+                margin: 20px auto 0;
+            }
+
+            .order_list_th li {
+                float: left;
+                height: 30px;
+                line-height: 30px
+            }
+
+            .order_list_th .col01 {
+                width: 20%;
+                margin-left: 20px
+            }
+
+            .order_list_th .col02 {
+                width: 20%
+            }
+
+            .stress {
+                color: #ff8800;
+            }
+
+            .order_list_table {
+                width: 945px;
+                border-collapse: collapse;
+                border-spacing: 0px;
+                border: 1px solid #ddd;
+                margin: -1px auto 0;
+            }
+
+            .order_list_table td {
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+
+            .order_goods_list {
+                border-bottom: 1px solid #ddd;
+                margin-bottom: -2px;
+            }
+
+            .order_goods_list li {
+                float: left;
+                height: 80px;
+                line-height: 80px;
+            }
+
+            .order_goods_list .col01 {
+                width: 20%
+            }
+
+            .order_goods_list .col01 img {
+                width: 60px;
+                height: 60px;
+                border: 1px solid #ddd;
+                margin: 10px auto;
+            }
+
+            .order_goods_list .col02 {
+                width: 50%;
+                text-align: left;
+            }
+
+            .order_goods_list .col02 em {
+                color: #999;
+                margin-left: 10px
+            }
+
+            .order_goods_list .col03 {
+                width: 15%
+            }
+
+            .order_goods_list .col04 {
+                width: 15%
+            }
+        </style>
+    {% endblock %}
+
+    <script src="{% static 'js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
+
+</head>
+<body>
+<section class="headerwrap headerwrap2">
+    <header>
+        <div class="header2 header">
+            <div class="top">
+                <div class="wp">
+                    <div class="fl"><p>服务电话：<b>13800138000</b></p></div>
+                    <!--登录后跳转-->
+                    <div class="personal">
+                        <dl class="user fr">
+                            <dd>{{ request.user.nickname }}<img class="down fr"
+                                                                src="{% static 'images/top_down.png' %}"/></dd>
+                            <dt><img width="20" height="20" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+                        </dl>
+                        <div class="userdetail">
+                            <dl>
+                                <dt><img width="80" height="80" src="{{ MEDIA_URL }}{{ request.user.image }}"/></dt>
+                                <dd>
+                                    <h2>{{ request.user.nickname }}</h2>
+                                    <p>{{ request.user.username }}</p>
+                                </dd>
+                            </dl>
+                            <div class="btn">
+                                <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
+                                <a class="fr" href="{% url 'login' %}">退出</a>
+                            </div>
+                        </div>
+                    </div>
+{#                    <a href="#">#}
+{#                        <div class="msg-num"><span id="MsgNum">0</span></div>#}
+{#                    </a>#}
+
+                </div>
+            </div>
+
+            <div class="middle">
+                <div class="wp">
+                    <a href="{% url 'index' %}"><img style="width: 194px" class="fl"
+                                                     src="{% static 'binshop_logo.png' %}"/></a>
+                    <h1>订单详情</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+</section>
+
+
+<!--crumbs start-->
+
+
+<section>
+    <div class="wp">
+        <ul class="crumbs">
+            <li><a href="{% url 'index' %}">首页</a>></li>
+            <li><a href="{% url 'users:user_info' %}">个人中心</a>></li>
+            <li><a href="{% url 'users:user_order' %}">订单列表</a>></li>
+            <li>订单详情</li>
+        </ul>
+    </div>
+</section>
+
+<section>
+    <div class="wp list personal_list">
+        <div class="left">
+            <ul>
+                <li><a href="{% url 'users:user_info' %}">个人信息</a></li>
+                <li><a href="{% url 'users:site_list' %}">收货地址</a></li>
+                <li class="active2"><a href="{% url 'users:user_order' %}">订单列表</a></li>
+            </ul>
+        </div>
+
+        <div class="right">
+            <div class="personal_des ">
+                <div class="head" style="border:1px solid #eaeaea;">
+                    <h1>订单详情</h1>
+                </div>
+                <div class="right_content clearfix">
+                    <h3 class="common_title2">商品信息</h3>
+
+                    <ul class="order_list_th">
+                        <li class="col01">订单创建时间：{{ order_info.add_time }}</li>
+                        <li class="col02">订单号：{{ order_info.order_sn }}</li>
+                        <li class="col02 stress">{{ order_info.get_pay_status_display }}</li>
+                    </ul>
+                    <table class="order_list_table w980">
+                        <tbody>
+                        <tr>
+                            <td width="55%">
+                                {% for order_good in order_goods %}
+                                <ul class="order_goods_list clearfix">
+                                    <li class="col01"><a href="{% url 'good_detail' order_good.goods_id %}"><img src="{{ MEDIA_URL }}{{ order_good.goods.goods_front_image }}"></a></li>
+                                    <li class="col02" style="overflow: hidden"><a style="color: black" href="{% url 'good_detail' order_good.goods_id %}">{{ order_good.goods.name }}</a></li>
+                                    <li class="col03">{{ order_good.goods_num }}</li>
+                                    <li class="col04">{{ order_good.goods.shop_price }}元</li>
+                                </ul>
+                                {% endfor %}
+                            </td>
+                            <td width="15%">{{ order_info.order_mount }}元</td>
+                            <td width="15%">{{ order_info.address }}<br><br>{{ order_info.signer_mobile }}<br><br>{{ order_info.signer }}</td>
+                            <td width="15%"><a href="{{ alipay_url }}" class="oper_btn">使用支付宝支付</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    {#                    <table class="order_list_table w980">#}
+                    {#                        <tbody>#}
+                    {#                            <tr>#}
+                    {#                                <td width="55%">#}
+                    {#                                    <ul class="order_goods_list">#}
+                    {#                                        <li class="col02">订单编号：<em>{{ order_info.order_sn }}</em></li>#}
+                    {#                                        <li class="col03">订单留言：</li>#}
+                    {#                                        <li class="col04">{{ order_info.post_message }}</li>#}
+                    {#                                    </ul>#}
+                    {#                                </td>#}
+                    {#                                <td width="15%">{{ order_info.order_mount }}元</td>#}
+                    {#                                <td width="15%">{{ order_info.get_pay_status_display }}</td>#}
+                    {#                                <td width="15%"><a href="{% url 'users:order_detail' order_info.id %}"#}
+                    {#                                                   class="oper_btn">订单详情</a></td>#}
+                    {#                            </tr>#}
+                    {#                        </tbody>#}
+                    {#                    </table>#}
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>
+
+
+<!--sidebar start-->
+<section>
+    <ul class="sidebar">
+        <li class="qq">
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2023525077&site=qq&menu=yes"></a>
+        </li>
+        <li class="totop"></li>
+    </ul>
+</section>
+<!--sidebar end-->
+<script src="{% static 'js/selectUi.js' %}" type='text/javascript'></script>
+<script type="text/javascript" src="{% static 'js/plugins/laydate/laydate.js' %}"></script>
+<script src="{% static 'js/plugins/layer/layer.js' %}"></script>
+<script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/jquery.scrollLoading.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/validateDialog.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/deco-common.js' %}" type="text/javascript"></script>
+<script src='{% static 'js/plugins/jquery.upload.js' %}' type='text/javascript'></script>
+<script src="{% static 'js/validate.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/deco-user.js' %}"></script>
+
+</body>
+</html>

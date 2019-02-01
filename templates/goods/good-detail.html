@@ -1,0 +1,235 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+{% block css %}
+    <style>
+        #buynum {
+            padding: 5px;
+            text-align: center;
+            width: 50px;
+            height: 30px;
+            box-sizing: border-box;
+        }
+
+        #minu_icon {
+            display: inline-block;
+            width: 28px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+            color: #666;
+            font-size: 17px;
+        }
+
+        #add_icon {
+            box-sizing: border-box;
+            display: inline-block;
+            width: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+            color: #666;
+            font-size: 17px;
+        }
+
+        #immediately_buy {
+            text-indent: 2px;
+            border: 1px solid #ccc;
+            width: 180px;
+            background: #ff7800;
+            height: 40px;
+            line-height: 40px;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            float: left;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <!-- 面包屑 START -->
+    <section>
+        <div class="wp">
+            <div class="crumbs">
+                <ul>
+                    <li><a href="{% url 'index' %}">首页</a>></li>
+                    <li>商品详情</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <!-- 面包屑 END -->
+
+    <!-- 商品上层简单信息 START -->
+    <section>
+        <div class="wp">
+            <div class="groupPurchase_detail detail">
+                <div class="toppro">
+                    <div class="left">
+                        <div class="picbox">
+                            <div class="tb-booth tb-pic">
+                                <img width="440" height="445"
+                                     src="{{ MEDIA_URL }}{{ good.goods_front_image }}"
+                                     class="jqzoom"/>
+                            </div>
+                        </div>
+                        <form action="{% url 'trade:immediately_buy' %}" method="post">
+                            <div class="des">
+                                <h1 title="{{ good.name }}">{{ good.name }}</h1>
+                                <span class="key">{{ good.goods_brief }}</span>
+                                <div class="prize">
+                                    <span class="fl">价格：<i class="key">{{ good.shop_price }}</i></span>
+                                    <span class="fr">销量：{{ good.sold_num }}</span>
+                                </div>
+                                <ul class="parameter">
+                                    <li><span class="pram word3">市 场 价：</span><span>{{ good.market_price }}</span></li>
+                                    <li><span class="pram word3">库 　 数：</span><span>{{ good.goods_num }}</span></li>
+                                    <li><span class="pram word3">收 藏 数：</span><span>{{ good.fav_num }}</span></li>
+                                    <li class="piclist"><span class="pram word4">图片列表：</span>
+
+                                        <span class="pic"><img width="40" height="40"
+                                                               src="../media/image/2016/12/default_big_14.png"/></span>
+
+                                    </li>
+                                    <li>
+                                        <span class="pram word3">数 　 量：</span>
+                                        <a href="javascript:void(0);" id="minu_icon">-</a>
+                                        <input id='buynum' type="text" value="1" name="buynum">
+                                        <input type="hidden" name="good_id" value="{{ good.id }}">
+                                        <a href="javascript:void(0);" id="add_icon">+</a>
+
+                                    </li>
+                                </ul>
+                                <div class="btns">
+                                    <div class="btn colectgroupbtn" id="jsLeftBtn">加入购物车</div>
+                                    <input type="submit" id="immediately_buy" value="立即购买">
+                                </div>
+                                {% csrf_token %}
+                            </div>
+                        </form>
+                    </div>
+                    <div class="right" style="height: auto;">
+                        <div class="head" style="height: auto">
+                            <p>相似商品</p>
+                        </div>
+                        {% for good in like_goods %}
+                            <div class="pic"
+                                 style="height: 182px; width: 190px; margin: 10px auto; overflow: inherit; border: none;">
+                                <a href="{% url 'good_detail' good.id %}">
+                                    <img width="190" height="165" src="{{ MEDIA_URL }}{{ good.goods_front_image }}"/>
+                                </a>
+                                <p style="font-family: Arial;text-align: center;padding-top: 5px;">
+                                    ¥{{ good.shop_price }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 商品上层简单信息 END -->
+
+    <!-- 商品下层详细信息 START -->
+    <section>
+        <div class="wp">
+            <div class="list groupPurchase_detail_pro">
+                <div class="left layout">
+                    <div class="head">
+                        <ul class="tab_header">
+                            <li class="active">商品详情</li>
+                        </ul>
+                    </div>
+                    <div class="tab_cont tab_cont1">
+                        {% autoescape off %}{{ good.goods_desc }}{% endautoescape %}
+                        <p>　{{ good.name }}</p>
+                    </div>
+
+                </div>
+                <div class="right layout">
+                    <div class="head">新品推荐</div>
+                    <div class="group_recommend">
+                        {% for good in new_goods %}
+                            <dl style="height: 200px;">
+                                <dt>
+                                    <a target="_blank" href="">
+                                        <img width="150" height="150" class="scrollLoading"
+                                             src="{{ MEDIA_URL }}{{ good.goods_front_image }}"/>
+                                    </a>
+                                </dt>
+                                <dd>
+                                    <a target="_blank" href=""><h2> {{ good.name }}</h2></a>
+                                    <span class="fl">价格：<i class="key">{{ good.shop_price }}</i></span>
+                                </dd>
+                            </dl>
+                        {% endfor %}
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 商品下层详细信息 END -->
+{% endblock %}
+
+
+{% block js %}
+    <script type="text/javascript">
+
+        // 加入购物车 cart/add/
+        function add_cart(current_elem, good_id, current_num) {
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url: "{% url 'trade:add_cart' %}",
+                data: {'good_id': good_id, 'nums': current_num},
+                async: true,
+                beforeSend: function (xhr, settings) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function (data) {
+                    if (data.status == 'fail') {
+                        if (data.msg == '用户未登录') {
+                            window.location.href = "{% url 'login' %}";
+                        } else {
+                            alert(data.msg)
+                        }
+
+                    } else if (data.status == 'success') {
+                        alert(data.msg);
+                        // current_elem.text(data.msg)
+                    }
+                },
+            });
+        }
+
+        let buynum = $("#buynum");
+
+        $('#jsLeftBtn').on('click', function () {
+            let current_num = buynum.attr("value");
+            add_cart($(this), {{ good.id }}, current_num);
+        });
+
+        $('#buy_immediately').on('click', function () {
+            let current_num = buynum.attr("value");
+            buy_immediately({{ good.id }}, current_num)
+        });
+
+        // 数量加减
+        $('#minu_icon').on('click', function () {
+            let current_num = buynum.attr("value");
+            if (current_num <= 0) {
+                return;
+            }
+            current_num--;
+            buynum.attr("value", current_num);
+        });
+        $('#add_icon').on('click', function () {
+            let current_num = buynum.attr("value");
+            current_num++;
+            buynum.attr("value", current_num);
+        });
+
+    </script>
+{% endblock %}

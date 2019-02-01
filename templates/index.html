@@ -1,0 +1,156 @@
+{% extends 'base/base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <style>
+        .line-limit-length {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="banner">
+        <div class="wp">
+            <div class="fl">
+                <div class="imgslide">
+                    <ul class="imgs">
+                        {% for banner in banners %}
+                            <li>
+                                <a href="{% url 'good_detail' banner.goods_id %}">
+                                    <img width="1200" height="478"
+                                         src="{{ MEDIA_URL }}{% if banner.image %}{{ banner.image }}
+                                        {% else %}{{ banner.goods.goods_front_image }}{% endif %}"/>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="unslider-arrow prev"></div>
+                <div class="unslider-arrow next"></div>
+            </div>
+
+        </div>
+
+
+    </div>
+    <!--banner end-->
+    <!--feature start-->
+    <section>
+        <div class="wp">
+            <ul class="feature">
+                <li class="feature1">
+                    <img class="pic" src="{% static 'images/feature1.png' %}"/>
+                    <p class="center">专业权威</p>
+                </li>
+                <li class="feature2">
+                    <img class="pic" src="{% static 'images/feature2.png' %}"/>
+                    <p class="center">平价亲民</p>
+                </li>
+                <li class="feature3">
+                    <img class="pic" src="{% static 'images/feature3.png' %}"/>
+                    <p class="center">全场包邮</p>
+                </li>
+                <li class="feature4">
+                    <img class="pic" src="{% static 'images/feature4.png' %}"/>
+                    <p class="center">绿色新鲜</p>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <!--feature end-->
+    <!--module1 start-->
+    <section>
+        <div class="module">
+            <div class="wp">
+                <h1>热卖商品</h1>
+                <div class="module1 eachmod">
+                    <div class="module1_1 left">
+                        <img width="228" height="614" src="{% static 'images/module1_1.jpg' %}"/>
+                        <p class="fisrt_word">超级热卖<br/>价格亲民</p>
+                        <a class="more" href="{% url 'goods:list' %}">更多热卖商品 ></a>
+                    </div>
+                    <div class="right group_list">
+                        <div class="module1_2 box">
+                            <div class="imgslide2">
+                                <ul class="imgs">
+                                    {% for banner in banners %}
+                                        <li>
+                                            <a href="{% url 'good_detail' banner.goods_id %}">
+                                                <img src="{{ MEDIA_URL }}{% if banner.image %}{{ banner.image }}
+                                        {% else %}{{ banner.goods.goods_front_image }}{% endif %}"/>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="unslider-arrow2 prev"></div>
+                            <div class="unslider-arrow2 next"></div>
+                        </div>
+                        {% for hot_good in hot_goods %}
+                            <div class="module1_{{ forloop.counter|add:2 }} box">
+                                <a href="{% url 'good_detail' hot_good.id %}">
+                                    <img width="233" height="190"
+                                         src="{{ MEDIA_URL }}{{ hot_good.goods_front_image }}"/>
+                                </a>
+                                <div class="des">
+                                    <a href="course-detail.html">
+                                        <h2 style="font-size: 12px; line-height: 25px;"
+                                            title="django入门">{{ hot_good.name }}</h2>
+                                    </a>
+                                    <span class="fl">价钱：<i class="key">{{ hot_good.shop_price }}</i></span>
+                                    <span class="fr">已售：{{ hot_good.sold_num }}</span>
+                                </div>
+                                <div class="bottom">
+                                    <span class="fl" title="慕课网">慕课网</span>
+                                    <span class="star fr">0</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="module greybg" style="margin: 30px 0 0 0">
+            <div class="wp">
+                <h1>近期新品</h1>
+                <div class="module3 eachmod">
+                    <div class="module3_1 left">
+                        <img width="228" height="463" src="{% static 'images/module3_1.jpg' %}"/>
+                        <p class="fisrt_word">新品上市<br/>全场包邮</p>
+                        <a class="more" href="#">查看更多商品 ></a>
+                    </div>
+                    <div class="right">
+                        <ul>
+                            {% for new_good in new_goods %}
+                                <li{% if forloop.counter|divisibleby:5 %} class="five"{% endif %}
+                                                                          style="height: 184px; margin-bottom: 60px;">
+                                    <a href="{% url 'good_detail' new_good.id %}">
+                                        <div class="company" style="height: 184px">
+                                            <img width="184" height="184"
+                                                 src="{{ MEDIA_URL }}{{ new_good.goods_front_image }}"/>
+                                            <div class="score">
+                                                <div class="circle" style="margin-top: 50px;">
+                                                    <h2>新鲜上新</h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p style="line-height: 20px"><span style="width: 200px; display: block;"
+                                                                           class="key line-limit-length"
+                                                                           title="慕课网">{{ new_good.name }}</span></p>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
