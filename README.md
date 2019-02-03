@@ -1,42 +1,108 @@
-# 大四毕业设计课题
+大四毕业设计课题
+===========================
 
 #### 系统主要是针对实现了对网上超市购物的自动化管理，它使得商品的管理工作走向全面自动化、规范化，且通过网络廉价快捷的通讯手段，消除时间与空间带来的障碍，从而大大的节约了交易成本，扩大了交易范围。构件一个网络购物系统能让我们更适应当今社会快节奏生活，使得顾客足不出户便可以方便轻松地选购自己喜欢的商品。
 #### 系统主要是为用户提供网上注册、网上浏览商品信息、网上购物的功能以及商家后台管理：包括添加商品、删除商品和修改商品等重要功能，这些功能，极大地提高了购物的效率。
 #### 开发一套网上商城购物系统,包括了用户账号管理、用户信息管理、超市商品管理、超市后台管理、添加商品信息、修改商品信息、删除商品信息、用户注册，用户查看商品信息、用户购买商品、等重要的功能。系统逐步展开设计，包括系统分析，系统总体设计，系统的详细设计等，最后对系统进行全面的测试。
 
 
-# 开发环境:  先简单的来，前后端不分离。
-	win10 x86，python3.6，django2.1.3，时间 18年12月
+## 我的开发环境:  先简单的来，前后端不分离。时间 18年12月
+1. win10 64位
+2. python 3.6
+3. Django 2.1
+4. Mysql 5.6
+5. PyCharm 2018.1
 
 
-# 新建虚拟环境(这里用到的知识有 virtualenv,virtualenvwrapper)
+TODO: 商品详情页的轮播图，微信支付，快速登陆。
+	
+
+## 运行方法：
+1. 安装依赖 (最好新建个虚拟环境)
+	* pip install -Ur requirements -i https://pypi.douban.com/simple
+2. 运行
+	* 自行修改 `binshop/settings.py` 里的数据库配置:
+			
+			DATABASES = {
+			    'default': {
+			        'ENGINE': 'django.db.backends.mysql',
+			        'NAME': 'binshop',
+			        'USER': 'root',
+			        'PASSWORD': '1123',
+			        'HOST': '127.0.0.1'
+			    }
+			}
+	* 创建数据库 `create database binshop;`
+	* 在终端下进行数据迁移:
+	
+			./manage.py makemigrations
+			./manage.py migrate
+	* 根据需要用Navicat导入目录下的sql文件
+	* 运行： `./manage.py runserver 0.0.0.0:8000`
+	* 浏览器打开: **http://127.0.0.1:8000/**
+3. 配置项 (更多设置项看settings)
+	* 后台入口: `http://127.0.0.1:8000/xadmin`
+	* 管理员账号: `admin`  密码: `123456`
+	* 邮件发送: settings.py里，是测试账号，可自行修改
+	* 支付宝keys: 是支付宝的沙箱环境
+	* 修改admin界面为中文: `LANGUAGE_CODE = 'zh-hans'`
+	* 修改为上海时间: `TIME_ZONE = 'Asia/Shanghai'`
+	* 禁用utc时间: `USE_TZ = False`
+	* 将apps和extra_apps目录加入path
+	* 开发环境需要 `DEBUG = True` 以及 `ALLOWED_HOSTS = ['*']`
+	* 开发环境收集静态文件: ./manage.py collectstatic 
+	* STATIC_ROOT 和 STATICFILES_DIRS, DIRS里不能包含有ROOT，ROOT所指向的目录是 静态文件收集后的目录
+
+## 问题相关 
+	(很简单的django基础，相关代码里也都有注释) 感谢观看和star
+	有任何问题欢迎提交Issue，或者发送邮箱 `binloveplay1314@qq.com`
+
+
+
+## 目录说明：
+* 学习阶段，项目架构和分层并没有划分的特别好。
+* apps目录下放着相关app，例如goods, users
+* extra_apps目录下放着相关外部apps，例如 xadmin
+* db_tools存放着部分category_data，以及如何导入数据，商场所有数据均来自苏宁超市。里面有个小爬虫用于爬取各个分类下的商品信息
+* media目录存放着后台上传的图片
+* static目录存放着前台静态文件
+* templates目录存放着模板文件
+
+### 感谢观看。
+
+
+
+## 编码过程中所做的一些笔记。
+
+### 新建虚拟环境(这里用到的知识有 virtualenv,virtualenvwrapper)
 	mkvirtualenv binshop
 	workon binshop	
 
-# 安装django，拥抱变化使用最新版
+### 安装django，拥抱变化使用最新版
 	pip install -i https://pypi.douban.com/simple django==2.1.3
 
-# 依赖库的安装
+### 依赖库的安装
 	pip install -i https://pypi.douban.com/simple mysqlclient==1.3.10
 	pip install Pillow
 
 
-# 创建项目，也可以在Pycharm里创建
+### 创建项目，也可以在Pycharm里创建
 	django-admin startproject mysite
 
-# 启动项目，visit http://127.0.0.1:8000
+### 启动项目，visit http://127.0.0.1:8000
 	python manage.py runserver 0:8000
 
-# 为了让目录结构更好点，这里我分成了apps和extra_apps两个目录
-# apps目录用来存放项目app, extra_apps里用来存放 xadmin这样外部app
-# 在settings将这两个目录放入环境变量, 在pycharm中将两目录设为Source Root
-	import sys
-	BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-	sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
-	sys.path.insert(1, os.path.join(BASE_DIR, 'extra_apps'))
+* 为了让目录结构更好点，这里我分成了apps和extra_apps两个目录
+* apps目录用来存放项目app, extra_apps里用来存放 xadmin这样外部app
+* 在settings将这两个目录放入环境变量, 在pycharm中将两目录设为Source Root
+
+		import sys
+		BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+		sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+		sys.path.insert(1, os.path.join(BASE_DIR, 'extra_apps'))
 
 
-# settings里的设置
+### settings里的设置
 	# 数据库的设置
 	DATABASES = {
 	    'default': {
@@ -61,38 +127,54 @@
 	MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-# 启动admin
+### 启动admin
 	settings里注册 admin
 	python manage.py createsuper
-
-# 数据迁移，每次对model进行修改后都需要
+ 
+	# 数据迁移，每次对model进行修改后都需要
 	python manage.py makemigrations
 	python manage.py migrate
 
-# 创建一个可以管理站点的用户
+	# 创建一个可以管理站点的用户
 	python manage.py createsuperuser
 
 
-# xadmin的安装:
+### xadmin的安装:
 	github地址：https://github.com/sshwsfc/xadmin
 	根据xadmin里的依赖安装依赖库
 	pip install httplib2 future django-crispy-forms django-formtools django-import-export
 	注册xadmin,crispy_forms的app
 	进行makemigrations和migrate和url配置，访问xadmin
 
-# 数据库的设计
 
-django app的设计 和 各app models的设计
-	users-用户管理
-		users.UserProfile-用户信息
-		users.EmailVerifyCode-邮箱验证码
+### 数据库的设计
+	django app的设计 和 各app models的设计
+		users-用户管理
+			UserProfile-用户信息
+			EmailVerifyCode-邮箱验证码
+			UserAddress-用户收货地址
+	
+		goods-商品管理
+			GoodsCategory-商品分类
+			Goods-商品信息
+			GoodsImage-商品详情页里的轮播图 TODO
+			Banner-首页轮播的商品
 
-	goods-商品管理		
+		trade-交易管理
+			ShoppingCart-购物车
+			OrderInfo-订单详情
+			OrderGoods-订单里的商品详情 一对多
+
+		user_operation-用户操作管理
+			这里的views里存放着全局404和500的处理函数
+		
+		tools-工具箱
+			alipay-支付宝网页版支付接口
+			send_email-发送邮件的处理逻辑
+			mixin_utils-mixin的小用法-Require登陆
 
 
-
-
-# 扩展user表，django自带的auth_user表不能满足
+### 扩展user表，django自带的auth_user表不能满足
 	from django.contrib.auth.models import AbstractUser
 
 	class UserProfile(AbstractUser):
@@ -115,60 +197,71 @@ django app的设计 和 各app models的设计
 	AUTH_USER_MODEL = 'users.UserProfile'
 
 
-
-
-
-
-# TemplateView用法
+### TemplateView用法
 	from django.views.generic import TemplateView
 	path('', TemplateView.as_view(template_name='index.html'), name='index'),
 
 
-
-
-
-# 静态文件的引用
+### 静态文件的引用
 	{% load staticfiles %}
 	{% static 'css/style.css' %}
 
 
-# Users.Views
-	class LoginView(View):
-	    """ 基于类的用法 """
-	    def get(self, request):
-	        return render(request, 'login.html', {})
-	
-	    def post(self, request):
-	        login_form = LoginForm(request.POST)
-	        if login_form.is_valid():
-	            username = request.POST.get('username', '')
-	            password = request.POST.get('password', '')
-	            user = authenticate(username=username, password=password)
-	            if user is not None:
-	                login(request, user)
-	                return render(request, 'index.html', {})
-	            else:
-	                # TODO: 账号错误 或 密码错误
-	                return render(request, 'login.html',{'msg': '账号或密码错误'})
-	        else:
-	            return render(request, 'login.html', {'login_form': login_form})
-
-
-	from django import forms
-	class LoginForm(forms.Form):
-	    """ Login的Form对前台登陆页面进行验证 """
-	    username = forms.CharField(required=True)
-	    password = forms.CharField(required=True, min_length=2)
-
-
-# django验证码插件
+### django验证码插件（看g官网上的文档）
 	Django Simple Captcha
 
 	pip install django-simple-captcha==0.5.9
 	add captcha to the INSTALLED_APPS in your settings
 	run python manage.py migrate
 	add an entry to your urls
-		path('captcha/', include('captcha.urls'))
+	path('captcha/', include('captcha.urls'))
 
 
+### 自定义商品图片上传路径
+	# Models里
+	def get_image_name(model, filename):
+    	ext = os.path.splitext(filename)[-1]
+    	return 'goods/images/{0}{1}'.format(model.name, ext)
 
+	# models.Goods的字段里
+		goods_front_image = models.ImageField(verbose_name="封面图", upload_to=get_image_name, null=True, blank=True,
+		                                          default='goods/images/default.png')
+
+
+### 调用django的ORM(db_tools有实践)
+	import sys
+	import os	
+	
+	pwd = os.path.dirname(os.path.realpath(__file__))
+	sys.path.append(pwd+"../")
+	os.environ.setdefault("DJANGO_SETTINGS_MODULE", "binshop.settings")
+	
+	import django
+	django.setup()
+	
+	from goods.models import Goods
+	
+	goods = Goods.object.all()
+	good = Goods()
+	good.xxx = xxx
+	good.save()
+
+
+### Django重载authenticate
+	class CustomBackend(ModelBackend):
+	    """
+	        settings里配置AUTHENTICATION_BACKENDS
+	        这里将email和username和nickname都当作username进行Q并起来
+	    """
+	    def authenticate(self, request, username=None, password=None, **kwargs):
+	        try:
+	            user = UserProfile.objects.get(Q(username=username) | Q(nickname=username) | Q(email=username))
+	            if user.check_password(password):
+	                return user
+	        except Exception as e:
+	            return None
+	
+		settings添加
+		AUTHENTICATION_BACKENDS = (
+		    'users.views.CustomBackend',
+		)
