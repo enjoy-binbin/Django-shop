@@ -13,10 +13,6 @@
 4. Mysql 5.6
 5. PyCharm 2018.1
 
-
-TODO: 商品详情页的轮播图，微信支付，快速登陆。
-	
-
 ## 运行方法：
 1. 安装依赖 (最好新建个虚拟环境)
 	* pip install -Ur requirements -i https://pypi.douban.com/simple
@@ -206,6 +202,12 @@ TODO: 商品详情页的轮播图，微信支付，快速登陆。
 	{% load staticfiles %}
 	{% static 'css/style.css' %}
 
+### 前端取form的值
+	{{ xx_form.data.key }}
+	{{ xx_form.key.value }}
+	
+	{% if xx_form.errors.key %}{% endif %}
+	{% for key, error in xx_form.errors.items %}error{%endfor%}
 
 ### django验证码插件（看g官网上的文档）
 	Django Simple Captcha
@@ -265,3 +267,153 @@ TODO: 商品详情页的轮播图，微信支付，快速登陆。
 		AUTHENTICATION_BACKENDS = (
 		    'users.views.CustomBackend',
 		)
+
+
+### 全局404和500设置，需要改成生产环境
+	# 生产环境下配置404 500
+	DEBUG = False
+	ALLOWED_HOSTS = ['*']
+
+	# 开发环境下可以在 urlpatterns后  分发media url
+	urlpatterns后 + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+	### 下面两个参数， STATICFILES_DIRS 是一个存放 各个静态文件目录的元组， STATIC_ROOT是 在manage.py执行完collectstatic,所有你注册过的 APP 中所使用的静态文件均会收集到你所指定的 STATIC_ROOT 目录中，所以这两个目录不能一样
+		STATIC_ROOT = os.path.join(BASE_DIR, 'static_collect')
+		STATICFILES_DIRS = (
+		    os.path.join(BASE_DIR, 'static'),
+		)	
+
+	# 生产环境用这个分发url， nginx的 TODO
+	from django.views.static import serve  # 处理图片静态文件
+	re_path('static/(?P<path>.*)', serve, {"document_root": STATIC_ROOT}),
+	re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+
+	# views里写的函数
+		from django.shortcuts import render_to_response
+		# 这里django2要加上 exception, django1.x就不用
+		def page_not_found(request, exception):
+		    """ 全局404处理函数 """
+		    response = render_to_response('base/404.html', {})
+		    response.code = 404
+		    return response
+		
+		def page_error(request):
+		    """ 全局500处理函数 """
+		    res = render_to_response('base/500.html', {})
+		    res.status_code = 500
+		    return res
+
+	# 404和500 在urls最后加上处理
+		handler404 = 'user_operation.views.page_not_found'
+		handler500 = 'user_operation.views.page_error'
+
+
+### 用django-pure-pagination进行分页
+	# 初始化
+	pip install django-pure-pagination
+	Add pure_pagination to INSTALLED_APPS
+
+	# views
+		try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        p = Paginator(shops, 5, request=request)
+        shops = p.page(page)
+
+	# templates
+		{% if shops.has_previous %}
+			<li class="long"><a href="?{{ shops.previous_page_number.querystring }}">上一页</a></li>
+        {% endif %}
+
+        {% for page in shops.pages %}
+            {% if page %}
+                {% ifequal page shops.number %}
+                    <li class="active"><a href="?{{ page.querystring }}">{{ page }}</a></li>
+                {% else %}
+                    <li><a href="?{{ page.querystring }}" class="page">{{ page }}</a></li>
+                {% endifequal %}
+            {% else %}
+                <li class="none"><a href="">...</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if shops.has_next %}
+            <li class="long"><a href="?{{ shops.next_page_number.querystring }}">下一页</a></li>
+        {% endif %}
+
+
+### 发送邮件
+	注册了一个新浪微博
+		binloveplay1314@sina.com
+		sina1123.0
+	在设置里 开启POP3/SMTP服务
+
+	settings.py里的设置
+		# 发送邮件的配置
+		EMAIL_HOST = 'smtp.sina.com'
+		EMAIL_PORT = 25
+		EMAIL_HOST_USER = 'binloveplay1314@sina.com'
+		EMAIL_HOST_PASSWORD = 'sina1123.0'
+		EMAIL_USE_TLS = False  # 不使用TLS协议, 不https:443
+		EMAIL_FROM = 'binloveplay1314@sina.com'  # 发件人
+
+	实现：
+		from random import Random
+	
+		from django.core.mail import send_mail
+		
+		from users.models import EmailVerifyCode
+		from binshop.settings import EMAIL_FROM
+		
+		
+		def send_email(email, type='register'):
+		    """
+		        发送邮件的方法
+		        register:   注册账号
+		        forget:     找回密码
+		        change:     修改邮箱
+		    """
+		    email_code = EmailVerifyCode()
+		    email_code.email = email
+		    email_code.code = generate_random_str(16)
+		    email_code.type = type
+		    email_code.save()
+		
+		    # 发送邮件
+		    if type == 'register':
+		        subject = '彬彬商场注册激活链接'
+		        message = '请点击下面的链接激活您的账号: http://xxx.xxx/active/{0}'.format(email_code)
+		        status = send_mail(subject, message, EMAIL_FROM, [email])
+		        if status:  # 发送成功
+		            pass
+		
+		
+		def generate_random_str(str_len=8):
+		    """ 生成长度为str_len的随机字符串 """
+		    str = ''
+		    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+		    random = Random()
+		    for i in range(str_len):
+		        str += chars[random.randint(0, len(chars) - 1)]
+		    return str
+
+
+### python两种生成md5的方法
+	# 使用md5包，py3已经移除
+	import md5
+	
+	src = 'this is a md5 test.'   
+	m1 = md5.new()   
+	m1.update(src)   
+	print m1.hexdigest()
+	
+	# 使用hashlib
+	import hashlib   
+	
+	md5 = hashlib.md5()   
+	md5.update(b'123')   
+	print(md5.hexdigest())
+	
+	推荐使用第二种方法。
