@@ -15,7 +15,7 @@
 5. PyCharm 2018.1
 6. xadmin后台： `admin 123456`
 
-## 运行方法：
+## 运行方法(下面有展示页)：
 1. 安装依赖 (最好新建个虚拟环境)
 	* pip install -Ur requirements -i https://pypi.douban.com/simple
 2. 运行
@@ -56,7 +56,6 @@
 	有任何问题欢迎提交Issue，或者发送邮箱 `binloveplay1314@qq.com`
 
 
-
 ## 目录说明：
 * 学习阶段，项目架构和分层并没有划分的特别好。
 * apps目录下放着相关app，例如goods, users
@@ -66,8 +65,29 @@
 * static目录存放着前台静态文件
 * templates目录存放着模板文件
 
-### 感谢观看。
+### 感谢观看 ---- > `展示页`。
 
+----------
+
+----------
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/1-index.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/2-index.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/3-category.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/4-goodDetail.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/5-login.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/6-register.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/7-fogetPWD.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/8-cart.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/9-order.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/10-userinfo.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/11-email.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/12-address.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/13-address.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/14-orderList.png)
+![image](https://github.com/enjoy-binbin/binshop-Django/blob/master/img/15-orderDetail.png)
+----------
+
+----------
 
 
 ## 编码过程中所做的一些笔记。
