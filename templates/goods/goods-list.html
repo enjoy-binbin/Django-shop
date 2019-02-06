@@ -144,13 +144,13 @@
                         {% for good in hot_goods %}
                             <dl>
                                 <dt>
-                                    <a target="_blank" href="">
+                                    <a target="_blank" href="{% url 'good_detail' good.id %}">
                                         <img width="240" height="220" class="scrollLoading"
                                              src="{{ MEDIA_URL }}{{ good.goods_front_image }}"/>
                                     </a>
                                 </dt>
                                 <dd>
-                                    <a target="_blank" href=""><h2>{{ good.name }}</h2></a>
+                                    <a target="_blank" href="{% url 'good_detail' good.id %}"><h2>{{ good.name }}</h2></a>
                                     <span class="fl">点击数：<i class="key">{{ good.click_num }}</i></span>
                                 </dd>
                             </dl>
