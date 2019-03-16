@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
     url = alipay.direct_pay(
         subject="iphone X 256G",  # 订单标题
-        out_trade_no="20180623999",  # 自己创建的不重复的订单号，测试时需要修改
+        out_trade_no="20180146623999",  # 自己创建的不重复的订单号，测试时需要修改
         total_amount=1,  # 价格总计
         return_url="http://119.29.27.194:8005/alipay/return/"  # GET同步url
     )

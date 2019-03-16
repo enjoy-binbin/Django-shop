@@ -58,7 +58,7 @@ class GoodDetailView(View):
 
         s = []
         while len(s) < 3:
-            x = random.randint(0, category_goods.__len__()-1)
+            x = random.randint(0, category_goods.__len__() - 1)
             if x not in s:
                 s.append(x)
 

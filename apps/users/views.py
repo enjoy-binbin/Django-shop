@@ -442,7 +442,9 @@ class OrderDetailView(LoginRequiredMixin, View):
 
         order_goods = get_list_or_404(OrderGoods, order_id=order_id)
 
-        alipay_url = self.get_AliPay_url(subject=order_info.order_sn, out_trade_no=order_info.order_sn,
+        good_name = order_goods[0].goods.name + '等商品'
+
+        alipay_url = self.get_AliPay_url(subject=good_name, out_trade_no=order_info.order_sn,
                                          total_amount=order_info.order_mount)
 
         return render(request, 'users/usercenter-order-detail.html', {
@@ -457,14 +459,14 @@ class OrderDetailView(LoginRequiredMixin, View):
             app_notify_url="http://119.29.27.194:8005/alipay/return/",  # POST异步请求url
             app_private_key_path=private_key_path,  # 私钥
             alipay_public_key_path=ali_pub_key_path,  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥
-            debug=True,  # 默认False, True为调用沙箱url, False为生产环境
+            debug=True,  # 默认False, True为调用沙箱url
             return_url="http://119.29.27.194:8005/alipay/return/"  # GET同步请求url
         )
 
         url = alipay.direct_pay(
             subject=subject,  # 订单标题
             out_trade_no=out_trade_no,  # 自己创建的不重复的订单号，测试时需要修改
-            total_amount=total_amount,  # 价格总计
+            total_amount=round(total_amount, 2),  # 价格总计
             return_url="http://119.29.27.194:8005/alipay/return/"  # GET同步url
         )
         re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
