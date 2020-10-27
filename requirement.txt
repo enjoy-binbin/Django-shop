@@ -2,7 +2,7 @@ asn1crypto==0.24.0
 certifi==2018.11.29
 cffi==1.11.5
 chardet==3.0.4
-cryptography==2.4.2
+cryptography==3.2
 defusedxml==0.5.0
 diff-match-patch==20181111
 Django==2.1.3
